@@ -1,12 +1,8 @@
 package be.nille.jwt.aspect.expression;
 
-import be.nille.jwt.aspect.expression.InvalidJWTExpressionException;
-import be.nille.jwt.aspect.expression.JWTExpressionEvaluator;
-import be.nille.jwt.aspect.expression.JWTRoot;
-import be.nille.jwt.components.JWT;
-import be.nille.jwt.components.JWTSigner;
-import be.nille.jwt.components.Payload;
 
+
+import be.nille.jwt.components.Payload;
 import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -26,7 +22,7 @@ import org.junit.Test;
 public class JWTExpressionEvaluatorTest {
     
     private JWTExpressionEvaluator evaluator;
-    private JWTRoot jwtRoot;
+    private PayloadRoot payloadRoot;
     
     @Before
     public void setup(){
@@ -35,16 +31,15 @@ public class JWTExpressionEvaluatorTest {
                 .withClaim("iss", "Nille")
                 .withClaim("sub", "Token")
                 .build();
-        JWTSigner signer = new JWTSigner("mysecret");
-        JWT jwt = signer.sign(payload);
-        jwtRoot = new JWTRoot(jwt);
+        payloadRoot = new PayloadRoot(payload);
+     
     }
 
     @Test
     public void evaluateTrue() {
         
         String expression = "hasClaim('iss','Nille')";
-        boolean evaluation = evaluator.evaluate(jwtRoot, expression);
+        boolean evaluation = evaluator.evaluate(payloadRoot, expression);
         assertTrue(evaluation);
     }
     
@@ -52,7 +47,7 @@ public class JWTExpressionEvaluatorTest {
     public void evaluateFalse() {
         
         String expression = "hasClaim('iss','NotNille')";
-        boolean evaluation = evaluator.evaluate(jwtRoot, expression);
+        boolean evaluation = evaluator.evaluate(payloadRoot, expression);
         assertFalse(evaluation);
     }
     
@@ -60,7 +55,7 @@ public class JWTExpressionEvaluatorTest {
     public void evaluateFalseBecauseClaimDoesNotExist() {
         
         String expression = "hasClaim('unknow','somevalue')";
-        boolean evaluation = evaluator.evaluate(jwtRoot, expression);
+        boolean evaluation = evaluator.evaluate(payloadRoot, expression);
         assertFalse(evaluation);
     }
     
@@ -68,7 +63,7 @@ public class JWTExpressionEvaluatorTest {
     public void evaluateNonsense() {
         
         String expression = "klsdfkl";
-        boolean evaluation = evaluator.evaluate(jwtRoot, expression);
+        boolean evaluation = evaluator.evaluate(payloadRoot, expression);
         assertFalse(evaluation);
     }
 

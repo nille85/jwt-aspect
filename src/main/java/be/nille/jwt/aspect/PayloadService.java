@@ -5,15 +5,17 @@
  */
 package be.nille.jwt.aspect;
 
-import be.nille.jwt.components.JWT;
+import be.nille.jwt.components.Payload;
+
+
 
 /**
  * @author nholvoet
  */
-public interface JWTService {
+public interface PayloadService {
 
-    public JWT getJWT();
-
+    public Payload getPayload();
+    
     public void verify();
 
 }

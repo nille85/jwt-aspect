@@ -9,9 +9,9 @@ import be.nille.jwt.aspect.annotation.ClaimValue;
 import be.nille.jwt.aspect.annotation.Authorize;
 import be.nille.jwt.components.ExpiredJWTException;
 import be.nille.jwt.components.InvalidJWTException;
-import be.nille.jwt.components.JWT;
 import be.nille.jwt.aspect.expression.JWTExpressionEvaluator;
-import be.nille.jwt.aspect.expression.JWTRoot;
+import be.nille.jwt.aspect.expression.PayloadRoot;
+import be.nille.jwt.components.Payload;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import lombok.extern.slf4j.Slf4j;
@@ -27,16 +27,15 @@ import org.aspectj.lang.reflect.MethodSignature;
 @Aspect
 public class JWTAspect {
 
-    private final JWTService jwtService;
+    private final PayloadService payloadService;
 
-    public JWTAspect(final JWTService jwtService) {
-        this.jwtService = jwtService;
+    public JWTAspect(final PayloadService payloadService) {
+        this.payloadService = payloadService;
     }
 
     @Around(value = "@annotation(authorize)")
     public Object methodsAnnotatedWithAuthorized(final ProceedingJoinPoint joinPoint, Authorize authorize) throws Throwable {
         log.debug("in authorize pointcut");
-        
         verify();
         String expression = authorize.expression();
         expression = replacePlaceholdersInExpression(joinPoint, expression);
@@ -45,13 +44,13 @@ public class JWTAspect {
     }
 
     private void verify() {
-        
-        
         try {
-            jwtService.verify();
+            payloadService.verify();
         } catch (InvalidJWTException ex) {
+            log.debug(ex.getMessage());
             throw new AuthenticationException("Not authentication to enter this method");
         } catch (ExpiredJWTException ex) {
+            log.debug(ex.getMessage());
             throw new ExpiredException("JWT is expired");
         }
     }
@@ -83,8 +82,8 @@ public class JWTAspect {
 
     private void evaluate(final String expression) {
         log.debug(expression);
-        JWT jwt = jwtService.getJWT();
-        JWTRoot jwtRoot = new JWTRoot(jwt);
+        Payload payload = payloadService.getPayload();
+        PayloadRoot jwtRoot = new PayloadRoot(payload);
         JWTExpressionEvaluator evaluator = new JWTExpressionEvaluator();
         boolean isAuthorized = evaluator.evaluate(jwtRoot, expression);
         if (!isAuthorized) {

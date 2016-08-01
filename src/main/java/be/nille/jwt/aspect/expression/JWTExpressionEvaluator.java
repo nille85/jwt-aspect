@@ -27,7 +27,7 @@ public class JWTExpressionEvaluator {
         parser = new SpelExpressionParser();
     }
 
-    public boolean evaluate(final JWTRoot jwtRoot, final String expression) {
+    public boolean evaluate(final PayloadRoot jwtRoot, final String expression) {
         EvaluationContext context = new StandardEvaluationContext(jwtRoot);
         try{
             Expression exp = parser.parseExpression(expression);

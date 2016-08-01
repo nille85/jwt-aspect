@@ -7,7 +7,6 @@ package be.nille.jwt.aspect;
 
 import be.nille.jwt.components.ExpiredJWTException;
 import be.nille.jwt.components.InvalidJWTException;
-import be.nille.jwt.components.JWT;
 import be.nille.jwt.components.JWTSigner;
 import be.nille.jwt.components.Payload;
 import static org.junit.Assert.assertEquals;
@@ -32,7 +31,7 @@ public class JWTAspectTest {
         this.factory = new AspectJProxyFactory(target);      
     }
     
-    private AspectTarget createProxy(final JWTService jwtService){
+    private AspectTarget createProxy(final PayloadService jwtService){
         JWTAspect aspect = new JWTAspect(jwtService);
         factory.addAspect(aspect);
         return factory.getProxy();
@@ -44,13 +43,12 @@ public class JWTAspectTest {
                 .withClaim("iss", "Nille")
                 .withClaim("sub", "Token")
                 .build();
-        JWTSigner signer = new JWTSigner("mysecret");
-        JWT jwt = signer.sign(payload);
+      
         
         
-        JWTService jwtService = Mockito.mock(JWTService.class);
-        when(jwtService.getJWT()).thenReturn(jwt);
-        AspectTarget target = createProxy(jwtService);
+        PayloadService service = Mockito.mock(PayloadService.class);
+        when(service.getPayload()).thenReturn(payload);
+        AspectTarget target = createProxy(service);
         assertEquals("value",target.getStringWithPlaceholder("Nille"));
     }
     
@@ -60,13 +58,12 @@ public class JWTAspectTest {
                 .withClaim("iss", "Nille")
                 .withClaim("sub", "Token")
                 .build();
-        JWTSigner signer = new JWTSigner("mysecret");
-        JWT jwt = signer.sign(payload);
         
         
-        JWTService jwtService = Mockito.mock(JWTService.class);
-        when(jwtService.getJWT()).thenReturn(jwt);
-        AspectTarget target = createProxy(jwtService);
+        
+        PayloadService service = Mockito.mock(PayloadService.class);
+        when(service.getPayload()).thenReturn(payload);
+        AspectTarget target = createProxy(service);
         assertEquals("value",target.getString());
     }
     
@@ -76,28 +73,26 @@ public class JWTAspectTest {
                 .withClaim("iss", "Other")
                 .withClaim("sub", "Token")
                 .build();
-        JWTSigner signer = new JWTSigner("mysecret");
-        JWT jwt = signer.sign(payload);
-        
-        JWTService jwtService = Mockito.mock(JWTService.class);
-        when(jwtService.getJWT()).thenReturn(jwt);
-        AspectTarget target = createProxy(jwtService);
+       PayloadService service = Mockito.mock(PayloadService.class);
+        when(service.getPayload()).thenReturn(payload);
+        AspectTarget target = createProxy(service);
+       
         assertEquals("value",target.getString());
     }
     
     @Test(expected = AuthenticationException.class)
     public void unauthenticatedOrInvalid(){
-        JWTService jwtService = Mockito.mock(JWTService.class);
-        doThrow(new InvalidJWTException("")).when(jwtService).verify();
-        AspectTarget target = createProxy(jwtService);
+        PayloadService service = Mockito.mock(PayloadService.class);
+        doThrow(new InvalidJWTException("")).when(service).verify();
+        AspectTarget target = createProxy(service);
         target.getString();
     }
     
     @Test(expected = ExpiredException.class)
     public void expired(){
-        JWTService jwtService = Mockito.mock(JWTService.class);
-        doThrow(new ExpiredJWTException("")).when(jwtService).verify();
-        AspectTarget target = createProxy(jwtService);
+        PayloadService service = Mockito.mock(PayloadService.class);
+        doThrow(new ExpiredJWTException("")).when(service).verify();
+        AspectTarget target = createProxy(service);
         target.getString();
     }
 
