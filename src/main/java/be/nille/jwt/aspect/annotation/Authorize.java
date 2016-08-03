@@ -21,6 +21,6 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Authorize {
 
-    public String expression();
+    public String value();
 
 }

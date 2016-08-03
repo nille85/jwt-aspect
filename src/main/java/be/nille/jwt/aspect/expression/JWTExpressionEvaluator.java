@@ -5,7 +5,8 @@
  */
 package be.nille.jwt.aspect.expression;
 
-import be.nille.jwt.components.UnexistingJWTClaimException;
+
+import be.nille.jwt.components.exception.UnexistingJWTClaimException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;

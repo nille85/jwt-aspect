@@ -2,7 +2,7 @@ package be.nille.jwt.aspect.expression;
 
 
 
-import be.nille.jwt.components.Payload;
+import be.nille.jwt.components.model.Payload;
 import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

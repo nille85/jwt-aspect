@@ -5,10 +5,10 @@
  */
 package be.nille.jwt.aspect;
 
-import be.nille.jwt.components.ExpiredJWTException;
-import be.nille.jwt.components.InvalidJWTException;
-import be.nille.jwt.components.JWTSigner;
-import be.nille.jwt.components.Payload;
+
+import be.nille.jwt.components.exception.ExpiredJWTException;
+import be.nille.jwt.components.exception.InvalidJWTException;
+import be.nille.jwt.components.model.Payload;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,8 +31,8 @@ public class JWTAspectTest {
         this.factory = new AspectJProxyFactory(target);      
     }
     
-    private AspectTarget createProxy(final PayloadService jwtService){
-        JWTAspect aspect = new JWTAspect(jwtService);
+    private AspectTarget createProxy(final PayloadService payloadService){
+        JWTAspect aspect = new JWTAspect(payloadService);
         factory.addAspect(aspect);
         return factory.getProxy();
     }
@@ -47,7 +47,7 @@ public class JWTAspectTest {
         
         
         PayloadService service = Mockito.mock(PayloadService.class);
-        when(service.getPayload()).thenReturn(payload);
+        when(service.verify()).thenReturn(payload);
         AspectTarget target = createProxy(service);
         assertEquals("value",target.getStringWithPlaceholder("Nille"));
     }
@@ -62,7 +62,7 @@ public class JWTAspectTest {
         
         
         PayloadService service = Mockito.mock(PayloadService.class);
-        when(service.getPayload()).thenReturn(payload);
+        when(service.verify()).thenReturn(payload);
         AspectTarget target = createProxy(service);
         assertEquals("value",target.getString());
     }
@@ -74,7 +74,7 @@ public class JWTAspectTest {
                 .withClaim("sub", "Token")
                 .build();
        PayloadService service = Mockito.mock(PayloadService.class);
-        when(service.getPayload()).thenReturn(payload);
+        when(service.verify()).thenReturn(payload);
         AspectTarget target = createProxy(service);
        
         assertEquals("value",target.getString());

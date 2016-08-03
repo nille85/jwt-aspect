@@ -13,15 +13,17 @@ import be.nille.jwt.aspect.annotation.Authorize;
  */
 public class AspectTarget {
 
-    @Authorize(expression = "hasClaim('iss','Nille')")
+    @Authorize("hasClaim('iss','Nille')")
     public String getString(){
         return "value";
     }
     
-    @Authorize(expression = "hasClaim('iss',#issuer)")
+    @Authorize("hasClaim('iss',#issuer)")
     public String getStringWithPlaceholder(@ClaimValue(value = "issuer") String issuer){
         return "value";
     }
+    
+    
     
    
 }

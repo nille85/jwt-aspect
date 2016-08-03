@@ -5,17 +5,13 @@
  */
 package be.nille.jwt.aspect;
 
-import be.nille.jwt.components.Payload;
-
-
+import be.nille.jwt.components.model.Payload;
 
 /**
  * @author nholvoet
  */
 public interface PayloadService {
 
-    public Payload getPayload();
-    
-    public void verify();
+    public Payload verify();
 
 }

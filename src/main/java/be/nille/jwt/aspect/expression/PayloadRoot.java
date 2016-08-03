@@ -5,14 +5,14 @@
  */
 package be.nille.jwt.aspect.expression;
 
-import be.nille.jwt.components.Claim;
-import be.nille.jwt.components.Payload;
-
-
+import be.nille.jwt.components.model.Claim;
+import be.nille.jwt.components.model.Payload;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author nholvoet
  */
+@Slf4j
 public class PayloadRoot {
 
     private final Payload payload;
@@ -22,14 +22,18 @@ public class PayloadRoot {
     }
 
     public boolean hasClaim(final String name, final String value) {
-     
+
         boolean claimExists = payload.hasClaim(name);
-        if(claimExists){
+        if (claimExists) {
             Claim retrievedClaim = payload.getClaim(name);
-            return value.equals(retrievedClaim.getValue());
+            log.debug("VALUE:" + value);
+            log.debug("RETRIEVED:" + retrievedClaim.getValue());
+            boolean equals = value.equals(retrievedClaim.getValue());
+            log.debug("EQUALS:" + equals);
+            return equals;
         }
         return false;
-     
+
     }
 
 }
