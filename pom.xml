@@ -9,6 +9,7 @@
         <java.version>1.7</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
+        <dependency.jwt.components.version>1.0.0</dependency.jwt.components.version>
         <dependency.lombok.version>1.16.8</dependency.lombok.version>
         <dependency.java-jwt.version>2.1.0</dependency.java-jwt.version>
         <dependency.commons-lang3.version>3.4</dependency.commons-lang3.version>
@@ -176,7 +177,7 @@
             <dependency>
                 <groupId>be.nille.jwt</groupId>
                 <artifactId>jwt-components</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>${dependency.jwt.components.version}</version>
             </dependency>
             
             <!--Spring -->
