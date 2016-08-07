@@ -71,7 +71,7 @@ public class JWTAspect {
             if (claimAnnotation != null) {
                 String claimValue = claimAnnotation.value();
                 String argument = (String) args[i];
-                expression = expression.replace("#"+claimValue, "'" + argument + "'");
+                expression = expression.replace("#"+claimValue, argument );
                 log.debug(claimValue);
                 break;
             }

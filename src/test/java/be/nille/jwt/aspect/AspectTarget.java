@@ -18,10 +18,22 @@ public class AspectTarget {
         return "value";
     }
     
-    @Authorize("hasClaim('iss',#issuer)")
+    @Authorize("hasClaim('iss','#issuer')")
     public String getStringWithPlaceholder(@ClaimValue(value = "issuer") String issuer){
         return "value";
     }
+    
+    @Authorize("hasClaim('scope','.*write.*')")
+    public String getStringWithRegex(){
+        return "value";
+    }
+    
+    @Authorize("hasClaim('scope','.*#scope.*')")
+    public String getStringWithPlaceholderAndRegex(@ClaimValue(value = "scope") String scope){
+        return "value";
+    }
+    
+    
     
     
     

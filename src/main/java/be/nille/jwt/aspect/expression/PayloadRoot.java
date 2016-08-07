@@ -21,19 +21,18 @@ public class PayloadRoot {
         this.payload = payload;
     }
 
-    public boolean hasClaim(final String name, final String value) {
-
+    
+    public boolean hasClaim(final String name, final String regexValue){
         boolean claimExists = payload.hasClaim(name);
         if (claimExists) {
             Claim retrievedClaim = payload.getClaim(name);
-            log.debug("VALUE:" + value);
-            log.debug("RETRIEVED:" + retrievedClaim.getValue());
-            boolean equals = value.equals(retrievedClaim.getValue());
-            log.debug("EQUALS:" + equals);
-            return equals;
+            Object retrievedObjectValue = retrievedClaim.getValue();
+            if(retrievedObjectValue instanceof String){
+                String retrievedValue = (String) retrievedObjectValue;
+                return retrievedValue.matches(regexValue);
+            }     
         }
         return false;
-
     }
 
 }

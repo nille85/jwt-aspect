@@ -5,6 +5,13 @@
     <artifactId>jwt-aspect</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    
+    <parent>
+        <artifactId>nille-parent-pom</artifactId>
+        <groupId>be.nille</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    
     <properties>
         <java.version>1.7</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,81 +28,12 @@
         <dependency.aspectjweaver.version>1.8.9</dependency.aspectjweaver.version>
         <dependency.mockito-all.version>1.10.19</dependency.mockito-all.version>
         
-        <plugin.maven-compiler-plugin.version>3.5.1</plugin.maven-compiler-plugin.version>
-        <plugin.maven-surefire-plugin.version>2.19.1</plugin.maven-surefire-plugin.version>
-        <plugin.maven-failsafe-plugin.version>2.19.1</plugin.maven-failsafe-plugin.version>
+      
         
     </properties>
 
     
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-            </plugin>
-        </plugins>
-
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${plugin.maven-compiler-plugin.version}</version>
-                    <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                        <encoding>${project.build.sourceEncoding}</encoding>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${plugin.maven-surefire-plugin.version}</version>
-                    <configuration>
-                        <argLine>-Dfile.encoding=UTF-8</argLine>
-                        <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
-                        <includes>
-                            <include>**/*Test.java</include>
-                        </includes>
-                        <excludes>
-                            <exclude>**/*IT.java</exclude>
-                        </excludes>
-                        <skipTests>${skip.unit.tests}</skipTests>
-						
-                    </configuration>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${plugin.maven-failsafe-plugin.version}</version>
-                    <executions>
-                        <!-- Ensures that both integration-test and verify goals of the Failsafe Maven plugin are executed. -->
-                        <execution>
-                            <id>integration-tests</id>
-                            <goals>
-                                <goal>integration-test</goal>
-                                <goal>verify</goal>
-                            </goals>
-                            <configuration>
-                                <!-- Skips integration tests if the value of skip.integration.tests property is true -->
-                                <skipTests>${skip.integration.tests}</skipTests>
-                                <includes>
-                                    <include>**/*IT.java</include>
-                                </includes>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
+    
         
     <dependencies>
        
